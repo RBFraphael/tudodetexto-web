@@ -26,14 +26,14 @@ export default function DirectoryBrowser({ root, onChangeDirectory }: { root?: I
                 </button>
             ) : null}
 
-            {directory?.children?.map((dir: IDirectory) => (
-                <button className="btn btn-outline-dark border-0 text-start" onClick={() => onChangeDirectory(dir)}>
+            {directory?.children?.map((dir: IDirectory, i: number) => (
+                <button key={i} className="btn btn-outline-dark border-0 text-start" onClick={() => onChangeDirectory(dir)}>
                     <FontAwesomeIcon icon={faFolder} fixedWidth /> {fileName(dir.name)}
                 </button>
             ))}
 
-            {directory?.files?.map((file: IFile) => (
-                <Link href={file.url} target="_blank" className="btn btn-outline-dark border-0 text-start">
+            {directory?.files?.map((file: IFile, i: number) => (
+                <Link key={i} href={file.url} target="_blank" className="btn btn-outline-dark border-0 text-start">
                     <FontAwesomeIcon icon={getMimeIcon(file.mimetype)} fixedWidth /> {fileName(file.name)}
                 </Link>
             ))}
