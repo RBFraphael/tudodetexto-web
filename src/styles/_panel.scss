@@ -1,0 +1,16 @@
+.panel {
+    header {
+        .logo {
+            flex-basis: 300px;
+            background: rgba($primary, 0.2);
+        }
+    }
+
+    .wrapper {
+        aside {
+            flex-basis: 300px;
+            background: rgba($dark, 0.1);
+            border-right: solid 1px rgba($dark, 0.25);
+        }
+    }
+}
