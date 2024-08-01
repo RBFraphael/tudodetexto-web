@@ -18,3 +18,7 @@ export const postRegisterUser = async (data: IUser) => {
 export const putUpdateUser = async (id: string, data: IUser) => {
     return Api.put(`/admin/users/${id}`, data);
 }
+
+export const deleteUser = async (id: string) => {
+    return Api.delete(`/admin/users/${id}`);
+}

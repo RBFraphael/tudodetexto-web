@@ -3,7 +3,7 @@
 import { IPaginatedData } from "@/interfaces/IPaginatedData";
 import { IUser, UserRole } from "@/interfaces/IUser";
 import { Alert } from "@/lib/Alert";
-import { getUsers } from "@/services/admin/UsersService";
+import { deleteUser, getUsers } from "@/services/admin/UsersService";
 import { faEye, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AxiosError, AxiosResponse } from "axios";
@@ -63,7 +63,7 @@ export default function Students() {
                     <Link href={`/admin/alunos/${user.id}/editar`} title="Editar" className="btn btn-dark btn-sm">
                         <FontAwesomeIcon icon={faPencil} fixedWidth />
                     </Link>
-                    <button title="Excluir" className="btn btn-danger btn-sm">
+                    <button onClick={() => onDeleteStudent(user)} title="Excluir" className="btn btn-danger btn-sm">
                         <FontAwesomeIcon icon={faTrash} fixedWidth />
                     </button>
                 </div>
@@ -92,6 +92,36 @@ export default function Students() {
         setSortColumn(column.id?.toString() ?? "id");
         setOrder(direction);
     };
+
+    const onDeleteStudent = (user: IUser) => {
+        Alert({
+            icon: "question",
+            title: "Tem certeza?",
+            text: `Tem certeza que deseja excluir o aluno ${user.first_name} ${user.last_name}? ATENÇÃO: Essa ação é irreversível.`,
+            showCancelButton: true,
+            showConfirmButton: true,
+            cancelButtonText: "Não, cancelar",
+            confirmButtonText: "Sim, excluir"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteUser(user.id!).then(() => {
+                    Alert({
+                        icon: "success",
+                        title: "Sucesso",
+                        text: `O aluno ${user.first_name} ${user.last_name} foi excluído com sucesso.`
+                    }).then(() => {
+                        loadStudents();
+                    });
+                }).catch((err: AxiosError<any>) => {
+                    Alert({
+                        icon: "error",
+                        title: "Erro",
+                        text: err.response?.data.message ?? "Ocorreu um erro durante a exclusão do aluno. Por favor, tente novamente."
+                    });
+                });
+            }
+        });
+    }
 
     return (
         <div className="container-fluid">
