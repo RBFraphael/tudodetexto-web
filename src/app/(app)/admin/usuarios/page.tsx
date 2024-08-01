@@ -1,12 +1,16 @@
 'use client';
 
 import { IPaginatedData } from "@/interfaces/IPaginatedData";
-import { IUser } from "@/interfaces/IUser";
+import { IUser, UserRole } from "@/interfaces/IUser";
+import { Alert } from "@/lib/Alert";
 import { getUsers } from "@/services/admin/UsersService";
-import { AxiosResponse } from "axios";
+import { faEye, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AxiosError, AxiosResponse } from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
+import { PatternFormat } from "react-number-format";
 
 export default function Users() {
     const [users, setUsers] = useState<IPaginatedData<IUser>>();
@@ -37,12 +41,33 @@ export default function Users() {
         {
             id: "document_number",
             name: "CPF",
-            selector: (user: IUser) => user.document_number,
+            cell: (user: IUser) => (
+                <PatternFormat format="###.###.###-##" displayType="text" value={user.document_number} />
+            ),
         },
         {
             id: "cellphone",
             name: "Celular",
-            selector: (user: IUser) => user.cellphone,
+            cell: (user: IUser) => (
+                <PatternFormat format="(##) # ####-####" displayType="text" value={user.cellphone} />
+            ),
+        },
+        {
+            id: "actions",
+            name: "",
+            cell: (user: IUser) => (
+                <div className="d-flex flex-row justify-content-end gap-1">
+                    <Link href={`/admin/usuarios/${user.id}`} title="Ver" className="btn btn-primary btn-sm">
+                        <FontAwesomeIcon icon={faEye} fixedWidth />
+                    </Link>
+                    <Link href={`/admin/usuarios/${user.id}/editar`} title="Editar" className="btn btn-dark btn-sm">
+                        <FontAwesomeIcon icon={faPencil} fixedWidth />
+                    </Link>
+                    <button title="Excluir" className="btn btn-danger btn-sm">
+                        <FontAwesomeIcon icon={faTrash} fixedWidth />
+                    </button>
+                </div>
+            )
         }
     ];
 
@@ -51,7 +76,8 @@ export default function Users() {
             page: page.toString(),
             per_page: perPage.toString(),
             order: order,
-            order_by: sortColumn
+            order_by: sortColumn,
+            role: UserRole.ADMIN
         });
         getUsers(query).then((res: AxiosResponse<IPaginatedData<IUser>>) => {
             setUsers(res.data);

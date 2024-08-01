@@ -3,6 +3,11 @@
         .logo {
             flex-basis: 300px;
             background: rgba($primary, 0.2);
+
+            @include media-breakpoint-down(lg) {
+                flex-basis: 200px;
+                background: transparent;
+            }
         }
     }
 
@@ -11,6 +16,10 @@
             flex-basis: 300px;
             background: rgba($dark, 0.1);
             border-right: solid 1px rgba($dark, 0.25);
+
+            @include media-breakpoint-down(lg) {
+                display: none !important;
+            }
         }
     }
 }
