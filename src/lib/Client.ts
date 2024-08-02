@@ -29,7 +29,7 @@ Api.interceptors.response.use(
         let originalConfig = error.config;
         let token = localStorage.getItem("access_token");
 
-        if (error.response?.status === 401 && !originalConfig._retry && token) {
+        if ((error.response?.status === 401 || error.response?.status === 403) && !originalConfig._retry && token) {
             originalConfig._retry = true;
             let tokenRefreshed = await refreshToken();
             if (tokenRefreshed) {
@@ -50,7 +50,7 @@ const refreshToken = async () => {
     }
 
     try {
-        let response = await Api.post("/auth/refresh", {});
+        let response = await Api.post("/auth/refresh-token", {});
 
         if (response.status === 200) {
             localStorage.setItem("access_token", response.data.access_token);

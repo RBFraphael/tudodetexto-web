@@ -31,9 +31,7 @@ export default function User({ params }: { params: { user_id: string } }) {
         <div className="container-fluid">
             <div className="row mb-4">
                 <div className="col-12">
-                    <div className="h2">
-                        Dados do Usuário {user.first_name} {user.last_name}
-                    </div>
+                    <h2>Dados do Usuário {user.first_name} {user.last_name}</h2>
                 </div>
             </div>
             <div className="row">

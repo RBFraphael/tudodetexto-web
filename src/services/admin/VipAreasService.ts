@@ -21,3 +21,11 @@ export const putUpdateVipArea = async (id: string, data: any) => {
 export const deleteVipArea = async (id: string) => {
     return Api.delete(`/admin/vip-areas/${id}`);
 }
+
+export const postAddStudentVipArea = async (vipAreaId: string, userId: string) => {
+    return Api.post(`/admin/vip-areas/${vipAreaId}/add-user`, { user_id: userId });
+}
+
+export const postRemoveStudentVipArea = async (vipAreaId: string, userId: string) => {
+    return Api.post(`/admin/vip-areas/${vipAreaId}/remove-user`, { user_id: userId });
+}

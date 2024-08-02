@@ -10,7 +10,7 @@ export interface IUser {
     phone: string;
     cellphone: string;
     role: UserRole;
-    vipAreas?: IVipArea[];
+    vip_areas?: IVipArea[];
 }
 
 export enum UserRole {
